@@ -8,10 +8,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Шашки: Битва умов</title>
-  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.2/dist/peerjs.min.js"></script>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; -webkit-user-select:none; user-select:none; }
-    html,body { width:100%; height:100%; overflow:hidden; background:#1a1a1a; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif; touch-action:manipulation; position:fixed; top:0; left:0; }
+    html,body { width:100%; height:100%; overflow:hidden; background:#1a1a1a; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif; touch-action:manipulation; }
     body { display:flex; justify-content:center; align-items:center; background:radial-gradient(ellipse at center, #2d2d2d 0%, #1a1a1a 70%); padding:10px; }
     .captured-particle { position:fixed; width:clamp(20px,6vw,28px); height:clamp(20px,6vw,28px); border-radius:50%; z-index:85; pointer-events:none; transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
     .captured-particle.white-particle { background:radial-gradient(circle at 35% 35%, #ffffff, #aaaaaa); box-shadow:0 0 20px #ffffff; }
@@ -195,8 +195,8 @@
   <script>
     (function() {
       let stats = { total:0, wins:0, losses:0, vsComputer:{0:0,1:0,2:0,3:0,4:0}, vsFriend:{whiteWins:0, blackWins:0, total:0} };
-      function loadStats() { try { const s=localStorage.getItem('checkers_stats_v26'); if(s){ const p=JSON.parse(s); stats.total=p.total||0; stats.wins=p.wins||0; stats.losses=p.losses||0; stats.vsComputer=p.vsComputer||{0:0,1:0,2:0,3:0,4:0}; stats.vsFriend=p.vsFriend||{whiteWins:0,blackWins:0,total:0}; } } catch(e){} }
-      function saveStats() { try { localStorage.setItem('checkers_stats_v26', JSON.stringify(stats)); } catch(e){} }
+      function loadStats() { try { const s=localStorage.getItem('checkers_stats_v30'); if(s){ const p=JSON.parse(s); stats.total=p.total||0; stats.wins=p.wins||0; stats.losses=p.losses||0; stats.vsComputer=p.vsComputer||{0:0,1:0,2:0,3:0,4:0}; stats.vsFriend=p.vsFriend||{whiteWins:0,blackWins:0,total:0}; } } catch(e){} }
+      function saveStats() { try { localStorage.setItem('checkers_stats_v30', JSON.stringify(stats)); } catch(e){} }
       function drawPieChart() { const c=document.getElementById('pieCanvas'); if(!c) return; const ctx=c.getContext('2d'), w=c.width, h=c.height, cx=w/2, cy=h/2, r=Math.min(w,h)*0.38; ctx.clearRect(0,0,w,h); const t=stats.wins+stats.losses; if(t===0){ ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fillStyle='#3a2818'; ctx.fill(); ctx.strokeStyle='#6b5030'; ctx.lineWidth=2; ctx.stroke(); return; } const wa=(stats.wins/t)*Math.PI*2; if(stats.wins>0){ ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+wa); ctx.closePath(); const g=ctx.createRadialGradient(cx-5,cy-5,r*0.3,cx,cy,r); g.addColorStop(0,'#ffe566'); g.addColorStop(1,'#cc9900'); ctx.fillStyle=g; ctx.fill(); ctx.strokeStyle='#ffd700'; ctx.lineWidth=1.5; ctx.stroke(); } if(stats.losses>0){ ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,-Math.PI/2+wa,Math.PI*1.5); ctx.closePath(); const g=ctx.createRadialGradient(cx-5,cy-5,r*0.3,cx,cy,r); g.addColorStop(0,'#ff6666'); g.addColorStop(1,'#aa2222'); ctx.fillStyle=g; ctx.fill(); ctx.strokeStyle='#ff4444'; ctx.lineWidth=1.5; ctx.stroke(); } }
       function updateStatsDisplay() {
         document.getElementById('statTotal').textContent=stats.total; document.getElementById('statWins').textContent=stats.wins; document.getElementById('statLosses').textContent=stats.losses;
